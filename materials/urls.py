@@ -6,7 +6,7 @@ from materials.views import CourseViewSet, LessonCreateAPIView, LessonListAPIVie
 
 app_name=MaterialsConfig.name
 router = DefaultRouter()
-router.register(r"Course", CourseViewSet, basename="course")
+router.register(r"course", CourseViewSet, basename="course")
 
 
 

@@ -10,7 +10,7 @@ from materials.serializers import CourseSerializer, LessonSerializer
 
 class CourseViewSet(viewsets.ModelViewSet):
     queryset = Course.objects.all()
-    serializer = CourseSerializer
+    serializer_class = CourseSerializer
 
 class LessonCreateAPIView(generics.CreateAPIView):
     serializer_class = LessonSerializer
