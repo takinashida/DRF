@@ -2,12 +2,13 @@ from datetime import date
 
 from django.core.management import BaseCommand
 from materials.models import Course, Lesson
-from users.models import Payment, User
-
+from users.models import User
+from materials.models import Payment
 
 class Command(BaseCommand):
     def handle(self, *args, **kwargs):
             user1, user_created = User.objects.get_or_create(username="freder", email="freder@example.com", city="Москва")
+            user1.set_password("qwerty123")
             user1.save()
 
             course1, course_created = Course.objects.get_or_create(name="Django для начинающих", description="Основы веб-разработки на Django")
