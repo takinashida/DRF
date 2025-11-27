@@ -55,5 +55,21 @@ class Payment(models.Model):
     def __str__(self):
         return self.date
 
+class Subscription(models.Model):
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='subscription', verbose_name="Пользователь")
+    subed_course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='subscription', verbose_name="Курс")
+
+
+
+    class Meta:
+        unique_together = ("user", "subed_course")
+        verbose_name = "подписка"
+        verbose_name_plural = "подписка"
+
+    def __str__(self):
+        return self.user.username
+
+
 
 
