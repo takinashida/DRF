@@ -46,6 +46,8 @@ class Payment(models.Model):
     buyed_lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name='payment', verbose_name="Урок",  blank=True, null=True)
     payment = models.IntegerField(verbose_name="Сумма платежа")
     type_payment = models.CharField(max_length=10, choices=PAYMENT_CHOICES, verbose_name="Тип оплаты")
+    stripe_session_id = models.CharField(max_length=255, blank=True, null=True)
+    payment_url = models.URLField(blank=True, null=True)
 
 
     class Meta:
