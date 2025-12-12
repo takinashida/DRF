@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    "drf-spectacular",
+    "django_celery_beat",
+    "drf_spectacular",
     "rest_framework_simplejwt",
     "rest_framework",
     "django_filters",
@@ -150,28 +151,28 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-# EMAIL_HOST = "smtp.mail.ru"            # Почтовый сервер
-# EMAIL_PORT = 587                       # TLS-порт
-# EMAIL_USE_TLS = True                     # всегда используем TLS
-# EMAIL_USE_SSL = False                    # не используем SSL
-# EMAIL_HOST_USER = os.getenv('EMAIL_USER')     # почта
-# EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASS')  # app password
-# DEFAULT_FROM_EMAIL = "<no-reply@fishgramm.com>"
-#
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.mail.ru"            # Почтовый сервер
+EMAIL_PORT = 587                       # TLS-порт
+EMAIL_USE_TLS = True                     # всегда используем TLS
+EMAIL_USE_SSL = False                    # не используем SSL
+EMAIL_HOST_USER = os.getenv('EMAIL_USER')     # почта
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASS')  # app password
+DEFAULT_FROM_EMAIL = "<no-reply@fishgramm.com>"
+
 AUTH_USER_MODEL = "users.User"
 # LOGIN_REDIRECT_URL = 'catalog:index'
 # LOGOUT_REDIRECT_URL = 'catalog:index'
 #
-# CACHE_ENABLED = True
-# if CACHE_ENABLED:
-#     CACHES = {
-#         "default": {
-#             "BACKEND": "django.core.cache.backends.redis.RedisCache",
-#             "LOCATION": "redis://127.0.0.1:6379/1",
-#             "TIMEOUT": 2,
-#         }
-#     }
+CACHE_ENABLED = True
+if CACHE_ENABLED:
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.redis.RedisCache",
+            "LOCATION": "redis://127.0.0.1:6379/1",
+            "TIMEOUT": 2,
+        }
+    }
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -183,11 +184,25 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
-# Настройки срока действия токенов
+
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
 
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
 
+CELERY_BROKER_URL = f"redis://{os.getenv('REDIS_HOST')}:{os.getenv('REDIS_PORT')}/{os.getenv('REDIS_DB')}"
+CELERY_RESULT_BACKEND = CELERY_BROKER_URL
+
+from celery.schedules import crontab
+
+CELERY_BEAT_SCHEDULE = {
+    "check_inactive_users_daily": {
+        "task": "materials.tasks.check_inactive_users",
+        "schedule": crontab(hour=8, minute=0),
+    }
+}
 
