@@ -46,5 +46,7 @@ jobs:
           git pull
           source venv/bin/activate
           pip install -r requirements.txt
-          sudo docker compose up --build  
+          sudo docker compose up --build 
+          sudo systemctl restart django >/dev/null 2>&1 &
+          disown
         EOF
