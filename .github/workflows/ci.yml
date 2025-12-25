@@ -6,6 +6,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    env:
+      SECRET_KEY: test-secret-key
+
     steps:
     - name: Checkout
       uses: actions/checkout@v3
