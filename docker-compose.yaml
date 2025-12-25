@@ -4,7 +4,7 @@ services:
   backend:
     build: .
     container_name: django-backend
-    command: sleep 5 && python manage.py migrate && python manage.py runserver 0.0.0.0:8000
+    command: python manage.py migrate && python manage.py runserver 0.0.0.0:8000
     ports:
       - "8000:8000"
     env_file:
