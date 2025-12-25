@@ -46,6 +46,5 @@ jobs:
           git pull
           source venv/bin/activate
           pip install -r requirements.txt
-          python3 manage.py migrate
-          sudo systemctl restart django
+          gunicorn config.wsgi:application --bind 0.0.0.0:8000
         EOF
