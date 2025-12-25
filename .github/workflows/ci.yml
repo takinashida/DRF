@@ -46,5 +46,5 @@ jobs:
           git pull
           source venv/bin/activate
           pip install -r requirements.txt
-          docker compose up --build  
+          sudo docker compose up --build  
         EOF
