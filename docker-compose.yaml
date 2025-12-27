@@ -16,6 +16,7 @@ services:
       - redis
     volumes:
       - .:/app
+      - static_volume:/app/staticfiles
 
   nginx:
     build:
